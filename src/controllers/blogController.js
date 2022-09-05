@@ -1,3 +1,4 @@
+const authorModel = require("../models/authorModel")
 const blogModel = require("../models/blogModel")
 
 
@@ -5,7 +6,11 @@ const Blog = async function(req,res){
 
 try {
     let data= req.body
-    let authorId= data.authorId
+    if(Object.keys(data).length==0){
+        return res.status(400).send({status: false, msg: "body should not be empty"})
+    }
+    let Id= data.authorId
+    let authorId= await authorModel.findById(Id)
     if(!authorId){
         return res.status(401).send({status: false, msg: "authorid is not valid"})
     }
@@ -16,8 +21,6 @@ try {
     
 }
 }
-
-
 
 
 module.exports.Blog= Blog

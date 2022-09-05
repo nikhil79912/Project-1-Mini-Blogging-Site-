@@ -1,4 +1,5 @@
 const mongoose= require("mongoose")
+const validator= require("validator")
 
 const authorModel= new mongoose.Schema({
 
@@ -19,13 +20,13 @@ const authorModel= new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        validate : {
-            validator: function(email){
-                return  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
-            }, message: "Email is invalid"
-
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error("email is not valid")
+            }
         }
-    },
+      },
+    
     password: {
         type: String,
         required: true
