@@ -9,7 +9,11 @@ const blogController = require("../controllers/blogController")
 
 router.post("/authors", authorController.createAuthor)
 
-router.post("/blogs", blogController.Blog)
+router.post("/blogs", blogController.createBlog)
+router.get("/getBlogs", blogController.getBlogs)
+router.put("/blogs/:id",blogController.updateBlogs)
+router.delete("/blogs/:id", blogController.deleted)
+router.delete("/blogs", blogController.queryDeleted)
 
 
 
