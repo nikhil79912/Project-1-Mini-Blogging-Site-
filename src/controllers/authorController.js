@@ -1,4 +1,6 @@
 const authorModel = require('../models/authorModel')
+const jwt = require("jsonwebtoken")
+const { getBlogs } = require('./blogController')
 
 const createAuthor = async function (req, res){
 
@@ -17,4 +19,35 @@ const createAuthor = async function (req, res){
 
 }
 
+
+let loginAuthor = async function (req,res) {
+    try {
+        let email = req.body.email;
+        let password = req.body.password;
+
+        if(!email) return res.status(400).send({status: false, msg: 'please provide valid email id'});
+
+        if(!password) return res.status(400).send({status: false, msg: 'please provide valid password'})
+
+        let authors = await authorModel.findOne({ email: email, password: password });
+        if(!authors) return res.status(400).send({
+        status: false, msg: "email or the password is not correct",
+    });
+
+    let token = jwt.sign(
+        {
+            authorId: authors._id.toString(),
+            project: 1,
+            group: "group-51",
+        },
+        "functionUp-project1"
+    );
+    console.log(token);
+    res.status(201).send({ status: true, data: {token} });
+    } catch(err) {
+        res.status(500).send({ msg: "Error", msg: err.message })
+    }  
+};
+
 module.exports.createAuthor = createAuthor
+module.exports.loginAuthor= loginAuthor
