@@ -123,13 +123,13 @@ const queryDeleted = async function (req, res) {
         if(decodedId != authorId) return res.status(403).send({status : false, message: "unauthorised access"})
 
 
-        if (Object.keys(req.query).length === 0) {
+        if (Object.keys(req.query).length == 0) {
             return res.status(400).send({ status: false, msg: "No blog to be deleted" })
         }
-        let authors = await blogModel.find({ authorId: authorId }).select({ _id: 1, isDeleted: 1 })
+        let blogs = await blogModel.find({ authorId: authorId }).select({ _id: 1, isDeleted: 1 })
 
-
-        if (authors == null) {
+ 
+        if (!blogs) {
             return res.status(404).send({ status: false, msg: "Blog document doesn't exists." })
         }
         if (category) {
@@ -148,8 +148,8 @@ const queryDeleted = async function (req, res) {
             result.isPublished = isPublished
         }
         const blog = await blogModel.find(result)
-        if (blog.length === 0) {
-            return res.status(200).send({ status: true, msg: "No blog found." })
+        if (!blog.length ) {
+            return res.status(404).send({ status: true, msg: "No blog found." })
         }
 
         const updateData = await blogModel.updateMany(result, { isDeleted: true, deletedAt: Date.now() } ,{new: true})
