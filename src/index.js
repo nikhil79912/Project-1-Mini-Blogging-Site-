@@ -14,12 +14,6 @@ mongoose.connect("mongodb+srv://prince123:6K5hPtPQQ0qwy2UJ@cluster0.gpsporz.mong
 .then( () => console.log("MongoDb is connected"))
 .catch ( err => console.log(err) )
 
-// app.use (
-//     function (req, res, next) {
-//         console.log ("inside GLOBAL MW");
-//         next();
-//   }
-//   );
 
 app.use('/', route);
 
