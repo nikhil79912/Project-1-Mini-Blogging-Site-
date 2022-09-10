@@ -1,15 +1,16 @@
 const mongoose = require("mongoose")
-const validator = require("validator")
 
 const authorModel = new mongoose.Schema({
 
     fname: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     lname: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     title: {
         type: String,
@@ -20,16 +21,13 @@ const authorModel = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        validate(value) {
-            if (!validator.isEmail(value)) {
-                throw new Error("email is not valid")
-            }
-        }
+        trim: true,
     },
 
     password: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     }
 
 }, { timestamps: true })
