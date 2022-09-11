@@ -14,7 +14,7 @@ const blogSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    authorId: { 
+    authorId: {
       type: ObjectId,
       required: true,
       ref: "Author",
@@ -28,7 +28,7 @@ const blogSchema = new mongoose.Schema(
     ],
     category: {
       type: String,
-      required: true, 
+      required: true,
       trim: true
     },
     subcategory: [

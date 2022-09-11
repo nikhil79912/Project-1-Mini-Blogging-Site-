@@ -6,13 +6,13 @@ const authentication = function (req, res, next) {
     {
         try {
             let token = req.headers["x-api-key"];
-            // console.log(token);
+            console.log(token);
 
             if (!token) {
                 return res.send({ status: false, msg: "token must be present in the request header" })
             }
             let decodedToken = jwt.verify(token, "functionUp-project1")
-            // console.log(decodedToken);
+            console.log(decodedToken);
             if (!decodedToken) return res.status(401).send({ status: false, msg: "token is not valid" })
             req["decodedToken"] = decodedToken
             next()
@@ -23,6 +23,9 @@ const authentication = function (req, res, next) {
         }
     }
 }
+
+
+
 
 
 

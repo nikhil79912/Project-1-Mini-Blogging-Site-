@@ -11,8 +11,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect("mongodb+srv://prince123:6K5hPtPQQ0qwy2UJ@cluster0.gpsporz.mongodb.net/pk-21?retryWrites=true&w=majority", {
     useNewUrlParser: true
 })
-.then( () => console.log("MongoDb is connected"))
-.catch ( err => console.log(err) )
+    .then(() => console.log("MongoDb is connected"))
+    .catch(err => console.log(err))
 
 
 app.use('/', route);
