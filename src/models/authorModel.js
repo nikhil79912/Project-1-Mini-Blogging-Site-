@@ -27,7 +27,8 @@ const authorModel = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+         
     }
 
 }, { timestamps: true })

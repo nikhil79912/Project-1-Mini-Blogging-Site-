@@ -1,7 +1,7 @@
 const authorModel = require("../models/authorModel")
 const blogModel = require("../models/blogModel")
 const mongoose = require ("mongoose");
-const ObjectId= mongoose.Types.ObjectId;
+
 
 
 // VALIDATION
@@ -28,7 +28,7 @@ const createBlog = async function (req, res) {
         if (!isValid(data.title)) return res.status(400).send({ status: false, msg: "title is Required" })
         if (!isValid(data.body)) return res.status(400).send({ status: false, msg: "body is Required" })
         if (!isValid(data.authorId)) return res.status(400).send({ status: false, msg: "authorId is Required" })
-        if (!isValidObjectId(data.authorId)) return res.status(400).send({ status: false, msg: "author is not valid" })
+        if (!isValidObjectId(data.authorId)) return res.status(400).send({ status: false, msg: "author id must have 24 digits" })
         if (!isValid(data.category)) return res.status(400).send({ status: false, msg: "category is Required" })
 
         let Id = data.authorId
@@ -51,13 +51,13 @@ let getBlogs = async function (req, res) {
         if (!Object.keys(data).length) {
             let blogs = await blogModel.find({ $and: [{ isDeleted: false }, { isPublished: true }] });
             if (!Object.keys(blogs).length) {
-                return res.status(404).send({ status: false, msg: "No such blog exists" });
+                return res.status(404).send({ status: false, msg: " No such blog exists" });
             }
             return res.status(200).send({ status: true, data: blogs });
         } else {
             let blogs = await blogModel.find({ $and: [{ isDeleted: false }, { isPublished: true }, data] });
             if (!Object.keys(blogs).length) {
-                return res.status(404).send({ status: false, msg: " No such blog exists" });
+                return res.status(404).send({ status: false, msg: " No such blogs exist" });
             }
             return res.status(200).send({ status: true, list: blogs });
            
@@ -84,7 +84,7 @@ const updateBlogs = async function (req, res) {
         if(!isValidObjectId(blogId)) return res.status(400).send({status: false, msg: "invalid blogId"})
         
         if (Object.keys(data).length == 0) {
-            return res.status(400).send({ Error: "Body  should be not empty" })
+            return res.status(400).send({status: false, msg: "Body should not be empty" })
         }
 
         let validId = await blogModel.findById(blogId)
@@ -94,7 +94,8 @@ const updateBlogs = async function (req, res) {
         let authorId= validId.authorId
         console.log(authorId);
         if(decodedId != authorId) return res.status(403).send({status : false, message: "unauthorised access"})
-        let savedData = await blogModel.findOneAndUpdate({ _id: blogId }, { $set: { title: title, body: body, tags: tags, subcategory: subcategory, isPublished: true, publishedAt: Date.now() } }, { new: true })
+        let savedData = await blogModel.findOneAndUpdate({ _id: blogId }, { $set: { title: title, body: body,  isPublished: true, publishedAt: Date.now() } ,
+        $push:{  tags:tags, subcategory:subcategory}}, { new: true })
         res.status(200).send({status: true, msg: "blog updated successfuly", data: savedData})
 
 
@@ -169,7 +170,7 @@ const queryDeleted = async function (req, res) {
         }
         const blog = await blogModel.find(result)
         if (!blog.length ) {
-            return res.status(404).send({ status: true, msg: "This blog is already deleted." })
+            return res.status(200).send({ status: true, msg: "This blog is already deleted." })
         }
 
         const updateData = await blogModel.updateMany(result, { isDeleted: true, deletedAt: Date.now() } ,{new: true})

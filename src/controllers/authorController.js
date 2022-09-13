@@ -28,7 +28,7 @@ const createAuthor = async function (req, res) {
 
         if (!isValid(data.password)) return res.status(400).send({ status: false, msg: "password is Required" })
 
-        if (!isValid(data.email)) return res.status(400).send({ status: false, msg: "email is Required" })
+        if (!isValid(data.email)) return res.status(400).send({ status: false, msg: "email is Required" }) 
         let checkMail = regex.test(data.email)
         if (checkMail == false) return res.status(400).send({ status: false, msg: "email is not valid" })
 
@@ -36,7 +36,7 @@ const createAuthor = async function (req, res) {
         if (emailCheck) return res.status(400).send({ status: false, msg: "email already used" })
 
         let authorCreated = await authorModel.create(data)
-        res.status(201).send({ msg: "author successfully created", data: authorCreated })
+        res.status(201).send({status: true, msg: "author successfully created", data: authorCreated })
     }
     catch (error) {
 
@@ -54,8 +54,8 @@ let loginAuthor = async function (req, res) {
         let password = req.body.password;
 
         if (!email) return res.status(400).send({ status: false, msg: 'please provide valid email id' });
-        let checkMail = regex.test(email)
-        if (checkMail == false) return res.status(400).send({ status: false, msg: "email is not valid" })
+        let checkMail = regex.test(email) 
+        if (checkMail == false ) return res.status(400).send({ status: false, msg: "email is not valid" })
 
         if (!password) return res.status(400).send({ status: false, msg: 'please provide valid password' })
 
